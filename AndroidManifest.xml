@@ -9,7 +9,9 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -31,6 +33,18 @@
         <activity
             android:name=".GetRoutesActivity"
             android:label="@string/title_activity_get_routes" >
+        </activity>
+        <activity
+            android:name=".GetDirectionActivity"
+            android:label="@string/title_activity_get_direction" >
+        </activity>
+        <activity
+            android:name=".GetStopsActivity"
+            android:label="@string/title_activity_get_stops" >
+        </activity>
+        <activity
+            android:name=".GetArrivalTimesActivity"
+            android:label="@string/title_activity_get_arrival_times" >
         </activity>
     </application>
 

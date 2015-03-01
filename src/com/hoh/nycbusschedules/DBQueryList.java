@@ -18,6 +18,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 //import javax.xml.bind.JAXBException;
 
+import android.util.Log;
+
 public class DBQueryList {
 
 	private static final String URI = "http://ec2-54-148-190-68.us-west-2.compute.amazonaws.com:8080/Search/rest/search/";
@@ -54,7 +56,8 @@ public class DBQueryList {
 	public DBQueryList getStopList(String routeId, String direction) throws IOException 
 	{
 		//create string of GET URL
-		URL url =  new URL(URI + "getStopListD" + direction + "/" + routeId.toUpperCase() + getDayOfWeek() );		
+		URL url =  new URL(URI + "getStopListD" + direction + "/" + routeId.toUpperCase() + getDayOfWeek() );	
+		Log.e("DBQueryList",url.toString());
         connectAndRequest(url);
         return this;
 	}
@@ -64,7 +67,8 @@ public class DBQueryList {
 	{
 		//create string of GET URL
     	URL url = new URL(URI +  "getArrivalTimes/"+ routeId.toUpperCase() + getDayOfWeek() + "/" + direction + "/" + stopId);
-        connectAndRequest(url);
+    	Log.e("DBQueryList - getArrivalTimes",url.toString());
+    	connectAndRequest(url);
         return this;
 	}
 	

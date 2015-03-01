@@ -7,5 +7,9 @@
     <string name="title_activity_list_view_example">ListViewExampleActivity</string>
     <string name="title_activity_list_example_activity">MainActivity</string>
     <string name="title_activity_get_routes">Route Selection</string>
+    <string name="title_activity_get_direction">GetDirectionActivity</string>
+    <string name="title_activity_get_stops">GetStopsActivity</string>
+    <string name="title_activity_get_arrival_times">GetArrivalTimesActivity</string>
+    <string name="noConnectionText">No Internet Connection Available</string>
 
 </resources>

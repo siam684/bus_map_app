@@ -134,9 +134,6 @@ public class getIt extends AsyncTask<String, Void, ArrayList<String>>
    
 		protected void onPostExecute(ArrayList<String> result) 
 		{
-			CustomStringListAdapter myAdapter =  new CustomStringListAdapter( context,list);
-			
-			listview.setAdapter(myAdapter);
 			super.onPostExecute(result);
 		}
 
