@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class CustomStringListAdapter extends ArrayAdapter<String> 
 {
@@ -26,7 +25,7 @@ public class CustomStringListAdapter extends ArrayAdapter<String>
 	private String localSelectedRouteLetter = null;
 	private String localSelectedRouteId = null;
 	private String localSelectedDirection = null;
-	private String localSelectedstopId = null;
+	//private String localSelectedstopId = null;
 	
 	
 	public CustomStringListAdapter(	Context context, 
@@ -51,8 +50,7 @@ public class CustomStringListAdapter extends ArrayAdapter<String>
 	public CustomStringListAdapter(	Context context, 
 									ArrayList<String> values,
 									String localSelectedRouteLetter,
-									String localSelectedRouteId
-									) 
+									String localSelectedRouteId) 
 	{
 	    super(context, R.layout.list_item, values);
 	    this.context = context;
@@ -65,8 +63,7 @@ public class CustomStringListAdapter extends ArrayAdapter<String>
 									ArrayList<String> values,
 									String localSelectedRouteLetter,
 									String localSelectedRouteId,
-									String localSelectedDirection
-			) 
+									String localSelectedDirection) 
 	{
 	super(context, R.layout.list_item, values);
 	this.context = context;
@@ -81,8 +78,7 @@ public class CustomStringListAdapter extends ArrayAdapter<String>
 									String localSelectedRouteLetter,
 									String localSelectedRouteId,
 									String localSelectedDirection,
-									String localSelectedStopId
-			) 
+									String localSelectedStopId) 
 	{
 	super(context, R.layout.list_item, values);
 	this.context = context;
@@ -90,7 +86,7 @@ public class CustomStringListAdapter extends ArrayAdapter<String>
 	this.localSelectedRouteLetter = localSelectedRouteLetter;
 	this.localSelectedRouteId = localSelectedRouteId;
 	this.localSelectedDirection = localSelectedDirection;
-	this.localSelectedstopId = localSelectedStopId;
+	//this.localSelectedstopId = localSelectedStopId;
 	}
 	
 	@SuppressLint("ViewHolder") @Override
@@ -108,7 +104,6 @@ public class CustomStringListAdapter extends ArrayAdapter<String>
             @Override
             public void onClick(View view) 
             {
-            	Toast.makeText(parent.getContext(), "button clicked: " + button.getText() + " " + button.getText().toString().length(), Toast.LENGTH_SHORT).show();
             	Intent intent = null;
             	
             	if(context.getClass().equals(GetFirstLettersActivity.class))
@@ -130,16 +125,6 @@ public class CustomStringListAdapter extends ArrayAdapter<String>
             	}
             	else if((context.getClass().equals(GetDirectionActivity.class)))
             	{
-            		/**
-            		 * 	Intent intent = new Intent(this, MyActivity.class);
-						Bundle extras = new Bundle();
-						extras.putString("EXTRA_USERNAME","my_username");
-						extras.putString("EXTRA_PASSWORD","my_password");
-						intent.putExtras(extras);
-						startActivity(intent);
-            		 */
-            		 
-            		
             		intent = new Intent(context, GetStopsActivity.class);
             		Bundle extras = new Bundle();
             		extras.putString(SELECTED_ROUTE_LETTER, localSelectedRouteLetter);

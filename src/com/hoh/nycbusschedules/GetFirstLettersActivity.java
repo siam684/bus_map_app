@@ -30,7 +30,7 @@ public class GetFirstLettersActivity extends Activity
 	    	setContentView(R.layout.get_first_letter_activity);
 	    	
 	    	ListView lettersListView = (ListView)findViewById(R.id.firstLetterListView);
-		    getIt it = new getIt(lettersListView, R.layout.list_item, R.id.button1,this);
+		    AsyncDBQuery it = new AsyncDBQuery(lettersListView, R.layout.list_item, R.id.button1,this);
 		    ArrayList<String> list = null;
 			try {
 				list = it.execute("").get();

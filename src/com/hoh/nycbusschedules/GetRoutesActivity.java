@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,27 +19,46 @@ public class GetRoutesActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_get_routes);
-		ListView routesListView = (ListView)this.findViewById(R.id.routesListView);
-		Intent intent = getIntent();
-		String selectedLetter = intent.getStringExtra(CustomStringListAdapter.SELECTED_ROUTE_LETTER);
-		Toast.makeText(this, "button clicked again: " + selectedLetter + " " + selectedLetter.length(), Toast.LENGTH_SHORT).show();
 		
-		getIt it = new getIt(routesListView, R.layout.list_item, R.id.button1,this,selectedLetter);
-		ArrayList<String> list = null;
+		ConnectivityManager cm =
+	            (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+	     
+	    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+	    boolean isConnected = activeNetwork != null &&
+	                          activeNetwork.isConnectedOrConnecting();
 		
-		try {
-			list = it.execute("").get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if(isConnected)
+	    {
+			setContentView(R.layout.activity_get_routes);
+			ListView routesListView = (ListView)this.findViewById(R.id.routesListView);
+			Intent intent = getIntent();
+			String selectedLetter = intent.getStringExtra(CustomStringListAdapter.SELECTED_ROUTE_LETTER);
+			Toast.makeText(this, "button clicked again: " + selectedLetter + " " + selectedLetter.length(), Toast.LENGTH_SHORT).show();
+			
+			AsyncDBQuery it = new AsyncDBQuery(routesListView, R.layout.list_item, R.id.button1,this,selectedLetter);
+			ArrayList<String> list = null;
+			
+			try {
+				list = it.execute("").get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			CustomStringListAdapter myAdapter =  new CustomStringListAdapter( this,list,selectedLetter);
+			routesListView.setAdapter(myAdapter);
+	    }
+	    else
+	    {
+	    	setContentView(R.layout.no_connection_layout);
+	    }
 		
-		CustomStringListAdapter myAdapter =  new CustomStringListAdapter( this,list,selectedLetter);
-		routesListView.setAdapter(myAdapter);
+		
+		
+		
 		
 	}
 

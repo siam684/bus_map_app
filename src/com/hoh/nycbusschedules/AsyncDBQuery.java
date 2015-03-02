@@ -2,11 +2,17 @@ package com.hoh.nycbusschedules;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class getIt extends AsyncTask<String, Void, ArrayList<String>>
+public class AsyncDBQuery extends AsyncTask<String, Void, ArrayList<String>>
   {
         ArrayList<String> list = null;
         Context context = null;
@@ -22,10 +28,11 @@ public class getIt extends AsyncTask<String, Void, ArrayList<String>>
 		boolean getStopList = false;
 		boolean getArrivalTimes = false;
         int listViewRow = 0;					
-        int textViewComponent = 0;				
+        int textViewComponent = 0;			
+        ProgressDialog mDialog;
+        View contextView;
         
-        
-		public getIt(	ListView listview, 
+		public AsyncDBQuery(	ListView listview, 
         				int listViewRow, 
         				int textViewComponent, 
         				Context context )
@@ -38,7 +45,7 @@ public class getIt extends AsyncTask<String, Void, ArrayList<String>>
         }
         
         
-		public getIt(	ListView listview, 
+		public AsyncDBQuery(	ListView listview, 
         				int listViewRow, 
         				int textViewComponent, 
         				Context context, 
@@ -62,7 +69,7 @@ public class getIt extends AsyncTask<String, Void, ArrayList<String>>
         }
         
         
-		public getIt(	ListView listview, 
+		public AsyncDBQuery(	ListView listview, 
         				int listViewRow, 
         				int textViewComponent, 
         				Context context, 
@@ -79,7 +86,7 @@ public class getIt extends AsyncTask<String, Void, ArrayList<String>>
         }
         
         
-		public getIt(	ListView listview, 
+		public AsyncDBQuery(	ListView listview, 
         				int listViewRow, 
         				int textViewComponent, 
         				Context context, 
@@ -97,6 +104,20 @@ public class getIt extends AsyncTask<String, Void, ArrayList<String>>
         	getArrivalTimes = true;
         }
         
+		
+		@Override
+        protected void onPreExecute() {
+            
+
+            mDialog = new ProgressDialog(context);
+            mDialog.setMessage("loading data...");
+            //contextView = ((Activity) context).getWindow().getDecorView().findViewById(android.R.id.content);
+            //((Activity) context).setContentView(R.layout.no_connection_layout);
+            mDialog.show();
+            super.onPreExecute();
+        }
+		
+
 
         @Override
 	    protected ArrayList<String> doInBackground(String... urls) 
@@ -134,7 +155,11 @@ public class getIt extends AsyncTask<String, Void, ArrayList<String>>
    
 		protected void onPostExecute(ArrayList<String> result) 
 		{
+			
+			mDialog.dismiss();
 			super.onPostExecute(result);
-		}
+			//((ViewGroup)contextView.getParent()).removeView(contextView);
+			//((Activity) context).setContentView(contextView);
+	}
 
 }  

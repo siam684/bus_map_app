@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,67 +19,84 @@ public class GetStopsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_get_stops);
 		
-		/*
-		 * intent intent = getIntent();
-			Bundle extras = intent.getExtras();
-			String username_string = extras.getString("EXTRA_USERNAME");
-			String password_string = extras.getString("EXTRA_PASSWORD");
-		 * */
-		
-		
-		ListView stopsListView = (ListView)this.findViewById(R.id.stopsListView);
-		Intent intent = getIntent();
-		
-		Bundle bundle = intent.getExtras();
-		String selectedLetter = bundle.getString(CustomStringListAdapter.SELECTED_ROUTE_LETTER);
-		String selectedRouteId = bundle.getString(CustomStringListAdapter.SELECTED_ROUTE_ID);
-		String selectedDirection = bundle.getString(CustomStringListAdapter.SELECTED_DIRECTION);
-		char direction = selectedDirection.charAt(selectedDirection.length()-2);
-		
-		if(selectedRouteId=="")
-		{
-			Log.e("GetStopsActivity","route id is null");
-		}
-		else
-		{
-			Log.e("GetStopsActivity",selectedRouteId);
-			Log.e("GetStopsActivity",selectedDirection);
-			Log.e("GetStopsActivity",selectedLetter);
-		}
-		
-		Log.e("GetStopsActivity","Direction = " + String.valueOf(direction));
-		getIt it = new getIt(stopsListView, R.layout.list_item, R.id.button1,this,selectedRouteId,String.valueOf(direction));
-		ArrayList<String> list = null;
-		
-		
-		
-		try {
-			list = it.execute("").get();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if(list==null)
-		{
-			Log.e("GetStopsActivity","Null String list in get stops activity");
-		}
-		else
-		{
-			for(int i=0;i<list.size();i++)
+		ConnectivityManager cm =
+	            (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+	     
+	    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+	    boolean isConnected = activeNetwork != null &&
+	                          activeNetwork.isConnectedOrConnecting();
+	    //setContentView(R.layout.get_first_letter_activity);
+	    
+	    if(isConnected)
+	    {
+	    	setContentView(R.layout.activity_get_stops);
+			
+			/*
+			 * intent intent = getIntent();
+				Bundle extras = intent.getExtras();
+				String username_string = extras.getString("EXTRA_USERNAME");
+				String password_string = extras.getString("EXTRA_PASSWORD");
+			 * */
+			
+			
+			ListView stopsListView = (ListView)this.findViewById(R.id.stopsListView);
+			Intent intent = getIntent();
+			
+			Bundle bundle = intent.getExtras();
+			String selectedLetter = bundle.getString(CustomStringListAdapter.SELECTED_ROUTE_LETTER);
+			String selectedRouteId = bundle.getString(CustomStringListAdapter.SELECTED_ROUTE_ID);
+			String selectedDirection = bundle.getString(CustomStringListAdapter.SELECTED_DIRECTION);
+			char direction = selectedDirection.charAt(selectedDirection.length()-2);
+			
+			if(selectedRouteId=="")
 			{
-				Log.e("GetStopsActivity",list.get(i));
+				Log.e("GetStopsActivity","route id is null");
 			}
-		}
-		
-		CustomStringListAdapter myAdapter =  new CustomStringListAdapter( this,list,selectedLetter,selectedRouteId,selectedDirection);
-		stopsListView.setAdapter(myAdapter);
-		
+			else
+			{
+				Log.e("GetStopsActivity",selectedRouteId);
+				Log.e("GetStopsActivity",selectedDirection);
+				Log.e("GetStopsActivity",selectedLetter);
+			}
+			
+			Log.e("GetStopsActivity","Direction = " + String.valueOf(direction));
+			AsyncDBQuery it = new AsyncDBQuery(stopsListView, R.layout.list_item, R.id.button1,this,selectedRouteId,String.valueOf(direction));
+			ArrayList<String> list = null;
+			
+			
+			
+			try {
+				list = it.execute("").get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(list==null)
+			{
+				Log.e("GetStopsActivity","Null String list in get stops activity");
+			}
+			else
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					Log.e("GetStopsActivity",list.get(i));
+				}
+			}
+			
+			CustomStringListAdapter myAdapter =  new CustomStringListAdapter( this,list,selectedLetter,selectedRouteId,selectedDirection);
+			stopsListView.setAdapter(myAdapter);
+			
+			
+	    }
+	    else
+	    {
+	    	setContentView(R.layout.no_connection_layout);
+	    }
 		
 	}
 
